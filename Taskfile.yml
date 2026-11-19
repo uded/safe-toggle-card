@@ -32,3 +32,11 @@ tasks:
     desc: Serve the demo page
     cmds:
       - npx vite --config vite.config.ts demo
+
+  release-notes:
+    desc: Print the CHANGELOG.md section used as release notes (default is the package.json version)
+    vars:
+      VERSION:
+        sh: node -p "require('./package.json').version"
+    cmds:
+      - sh scripts/release-notes.sh {{.VERSION}}

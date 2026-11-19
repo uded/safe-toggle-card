@@ -16,9 +16,25 @@ jobs:
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v7.0.1
+        with:
+          # tags are needed to find the previous release for the compare link
+          fetch-depth: 0
+
+      - name: 🔓 Trust the workspace for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: 📦 Install dependencies
         run: npm ci
+
+      - name: 📝 Release notes from CHANGELOG.md
+        run: |
+          sh scripts/release-notes.sh "${{ github.ref_name }}" > release-notes.md
+          prev=$(git tag --sort=-v:refname | grep -v "^${{ github.ref_name }}$" | head -n 1 || true)
+          if [ -n "$prev" ]; then
+            printf '\n**Full changelog**: https://github.com/%s/compare/%s...%s\n' \
+              "${{ github.repository }}" "$prev" "${{ github.ref_name }}" >> release-notes.md
+          fi
+          cat release-notes.md
 
       - name: 🧪 Test
         run: npx task test
@@ -30,4 +46,4 @@ jobs:
         uses: softprops/action-gh-release@v3.0.4
         with:
           files: dist/safe-toggle-card.js
-          generate_release_notes: true
+          body_path: release-notes.md
