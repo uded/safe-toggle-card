@@ -1,0 +1,33 @@
+version: '3'
+
+tasks:
+  install:
+    desc: Install dependencies
+    cmds:
+      - npm ci
+
+  build:
+    desc: Build dist/safe-toggle-card.js
+    cmds:
+      - npx vite build
+
+  test:
+    desc: Run unit tests (pass a filter after --)
+    cmds:
+      - npx vitest run {{.CLI_ARGS}}
+
+  lint:
+    desc: Type-check and verify formatting
+    cmds:
+      - npx tsc --noEmit
+      - npx prettier --check .
+
+  format:
+    desc: Format all files
+    cmds:
+      - npx prettier --write .
+
+  dev:
+    desc: Serve the demo page
+    cmds:
+      - npx vite --config vite.config.ts demo

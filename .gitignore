@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+*.profraw
+.superpowers/
+
+# local tooling, never committed
+CLAUDE.md
+SESSION_CONTEXT.md
+docs/superpowers/
+.claude/
+.serena/
