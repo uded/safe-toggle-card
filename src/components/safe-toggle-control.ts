@@ -429,8 +429,11 @@ export class SafeToggleControl extends LitElement {
         var(--target) 20%,
         var(--ha-card-background, var(--card-background-color, #fff))
       );
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-      color: var(--target);
+      box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--target) 35%, transparent),
+        0 1px 2px rgba(0, 0, 0, 0.12);
+      /* pulled toward the text color: darker on light themes, near the state color on dark */
+      color: color-mix(in srgb, var(--target) 55%, var(--primary-text-color, #000));
       overflow: hidden;
       display: flex;
       align-items: center;
