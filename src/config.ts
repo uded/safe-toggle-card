@@ -8,6 +8,7 @@ import type {
   SafeToggleConfig,
   TextOverrides,
 } from './types';
+import { isPinHash } from './pin';
 
 /** Thrown by setConfig; HA renders the message as an error card. */
 export class ConfigError extends Error {
@@ -46,7 +47,6 @@ export function presetOf(d: DirectionConfig): PresetId | 'custom' {
 
 const GESTURES: readonly Gesture[] = ['tap', 'multi_tap', 'slide'];
 const CONFIRMS: readonly ConfirmMode[] = ['none', 'dialog', 'pin'];
-const PIN_HASH_RE = /^v1\$[0-9a-f]{32}\$[0-9a-f]{64}$/;
 
 type Raw = Record<string, unknown>;
 
@@ -120,7 +120,7 @@ function pin(v: unknown): PinConfig {
     lockout_s: num(v, 'lockout_s', 30, 0, 3600, p),
   };
   if (out.source === 'inline') {
-    if (typeof v.hash !== 'string' || !PIN_HASH_RE.test(v.hash)) {
+    if (typeof v.hash !== 'string' || !isPinHash(v.hash)) {
       throw new ConfigError('pin.hash is missing or malformed; set the PIN in the visual editor');
     }
     out.hash = v.hash;
