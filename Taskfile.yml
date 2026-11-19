@@ -10,6 +10,7 @@ tasks:
     desc: Build dist/safe-toggle-card.js
     cmds:
       - npx vite build
+      - test "$(ls dist/*.js | wc -l | tr -d ' ')" = 1 || (echo "dist must contain exactly one JS file" && ls dist && exit 1)
 
   test:
     desc: Run unit tests (pass a filter after --)
