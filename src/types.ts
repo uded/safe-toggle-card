@@ -14,6 +14,7 @@ export interface HomeAssistant {
   language: string;
   callService(domain: string, service: string, data?: object, target?: object): Promise<unknown>;
   formatEntityState(stateObj: HassEntity): string;
+  translationMetadata?: { dir?: 'ltr' | 'rtl' };
 }
 
 export type Direction = 'activate' | 'deactivate';

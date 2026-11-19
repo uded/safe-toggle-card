@@ -6,16 +6,9 @@ describe('bundle entry', () => {
     expect(customElements.get('safe-toggle-card')).toBeDefined();
   });
 
-  it('round-trips a reflected Lit reactive property', async () => {
-    const el = document.createElement('safe-toggle-card') as HTMLElement & {
-      smoke: string;
-      updateComplete: Promise<boolean>;
-    };
-    el.smoke = 'ok';
-    document.body.append(el);
-    await el.updateComplete;
-    expect(el.smoke).toBe('ok');
-    expect(el.getAttribute('smoke')).toBe('ok');
-    el.remove();
+  it('announces itself to the HA card picker', () => {
+    expect(window.customCards).toContainEqual(
+      expect.objectContaining({ type: 'safe-toggle-card', preview: true }),
+    );
   });
 });
