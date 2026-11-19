@@ -61,6 +61,8 @@ export interface SafeToggleConfig {
   entity: string;
   name?: string;
   icon?: string;
+  /** `state`, a theme color name or a hex value, as in HA's Tile card. */
+  color: string;
   show_state: boolean;
   header_action: 'none' | 'more-info';
   haptics: boolean;

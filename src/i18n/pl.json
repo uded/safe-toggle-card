@@ -32,6 +32,7 @@
   "editor_entity": "Encja",
   "editor_name": "Nazwa",
   "editor_icon": "Ikona",
+  "editor_color": "Kolor",
   "editor_show_state": "Pokaż stan",
   "editor_header_action": "Dotknięcie nagłówka",
   "editor_haptics": "Wibracje",

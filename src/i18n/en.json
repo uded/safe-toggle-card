@@ -32,6 +32,7 @@
   "editor_entity": "Entity",
   "editor_name": "Name",
   "editor_icon": "Icon",
+  "editor_color": "Color",
   "editor_show_state": "Show state",
   "editor_header_action": "Header tap",
   "editor_haptics": "Haptic feedback",

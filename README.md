@@ -57,19 +57,20 @@ The direction is fixed when you start a gesture. If the entity changes state whi
 
 ## Options
 
-| Option          | Default       | Description                                                                       |
-| --------------- | ------------- | --------------------------------------------------------------------------------- |
-| `entity`        | required      | The entity to switch.                                                             |
-| `name`          | friendly name | Name in the header.                                                               |
-| `icon`          | entity icon   | Icon in the header.                                                               |
-| `show_state`    | `true`        | Show the state under the name.                                                    |
-| `header_action` | `none`        | `none` or `more-info`. See [Security](#security).                                 |
-| `haptics`       | `true`        | Haptic feedback (Companion app, Android browsers).                                |
-| `language`      | `auto`        | `auto` (follows Home Assistant), `en` or `pl`.                                    |
-| `activate`      | slide         | Protection when switching to active. See [Direction options](#direction-options). |
-| `deactivate`    | slide         | Protection when switching back.                                                   |
-| `pin`           |               | Required when a direction uses `confirm: pin`. See [PIN](#pin).                   |
-| `texts`         |               | Text overrides for the whole card. See [Texts](#texts).                           |
+| Option          | Default       | Description                                                                                                                                   |
+| --------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `entity`        | required      | The entity to switch.                                                                                                                         |
+| `name`          | friendly name | Name in the header.                                                                                                                           |
+| `icon`          | entity icon   | Icon in the header.                                                                                                                           |
+| `color`         | `state`       | Card color, as in the Tile card: a theme color name (`red`, `teal`, ...) or a hex value. Colors the slider, and the header icon while active. |
+| `show_state`    | `true`        | Show the state under the name.                                                                                                                |
+| `header_action` | `none`        | `none` or `more-info`. See [Security](#security).                                                                                             |
+| `haptics`       | `true`        | Haptic feedback (Companion app, Android browsers).                                                                                            |
+| `language`      | `auto`        | `auto` (follows Home Assistant), `en` or `pl`.                                                                                                |
+| `activate`      | slide         | Protection when switching to active. See [Direction options](#direction-options).                                                             |
+| `deactivate`    | slide         | Protection when switching back.                                                                                                               |
+| `pin`           |               | Required when a direction uses `confirm: pin`. See [PIN](#pin).                                                                               |
+| `texts`         |               | Text overrides for the whole card. See [Texts](#texts).                                                                                       |
 
 ### Direction options
 

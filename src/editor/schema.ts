@@ -93,6 +93,7 @@ export function buildSchema(raw: Raw, hass: HomeAssistant | undefined, lang: Lan
     { name: 'entity', required: true, selector: { entity: { include_entities: include } } },
     text('name'),
     { name: 'icon', selector: { icon: {} } },
+    { name: 'color', selector: { ui_color: { default_color: 'state', include_state: true } } },
     { name: 'show_state', selector: { boolean: {} } },
     { name: 'header_action', selector: select(lang, 'editor_header_', ['none', 'more-info']) },
     { name: 'haptics', selector: { boolean: {} } },
@@ -165,6 +166,7 @@ export function applyEditorData(raw: Raw, data: Raw): Raw {
   const before = editorData(raw);
   const out: Raw = { ...raw, ...data };
   for (const key of ['name', 'icon']) if (!out[key]) delete out[key];
+  if (!out.color || out.color === 'state') delete out.color;
   for (const dir of DIRECTIONS) {
     if (!data[dir]) continue;
     const { preset, ...d } = data[dir] as Raw;

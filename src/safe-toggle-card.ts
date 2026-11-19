@@ -16,7 +16,7 @@ import { fireHaptic } from './haptics';
 import { resolveLang, t, type Lang, type TextKey } from './i18n';
 import { TimerBag } from './machines/effects';
 import { flowReducer, type FlowEvent, type FlowState } from './machines/flow';
-import { stateColorCss } from './styles';
+import { cardColorCss, stateColorCss } from './styles';
 import type { Direction, HassEntity, HomeAssistant, SafeToggleConfig } from './types';
 
 declare global {
@@ -261,9 +261,12 @@ export class SafeToggleCard extends LitElement {
   private renderHeader(s: HassEntity) {
     const config = this.config!;
     const unavailable = s.state === 'unavailable' || s.state === 'unknown';
+    const active = isStateless(config.entity) || isActive(s);
+    // like the Tile card, a custom color only shows while the entity is active
+    const custom = active ? cardColorCss(config.color) : undefined;
     const color = unavailable
       ? 'var(--state-unavailable-color, var(--disabled-color))'
-      : stateColorCss(config.entity, s.state, isStateless(config.entity) || isActive(s));
+      : (custom ?? stateColorCss(config.entity, s.state, active));
     const stateText = isStateless(config.entity)
       ? this.text('last_activated', { time: relativeTime(s.state, this.uiLang) })
       : (this.hass?.formatEntityState?.(s) ?? s.state);
@@ -299,11 +302,13 @@ export class SafeToggleCard extends LitElement {
       this.flow.phase === 'executing' ||
       this.flow.phase === 'pending' ||
       (s !== undefined && isTransitional(s));
-    const targetColor = stateColorCss(
-      config.entity,
-      targetState(config.entity, dir ?? 'activate'),
-      dir !== 'deactivate',
-    );
+    const targetColor =
+      cardColorCss(config.color) ??
+      stateColorCss(
+        config.entity,
+        targetState(config.entity, dir ?? 'activate'),
+        dir !== 'deactivate',
+      );
     const rtl = this.hass?.translationMetadata?.dir === 'rtl' || document.dir === 'rtl';
     return html`
       <ha-card>

@@ -40,6 +40,7 @@ const configs = [
     entity: 'input_boolean.away_mode',
     name: 'Away mode (slide both ways)',
     icon: 'mdi:airplane',
+    color: 'deep-purple',
   },
   {
     entity: 'lock.front_door',

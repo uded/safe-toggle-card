@@ -9,6 +9,7 @@ import type {
   TextOverrides,
 } from './types';
 import { isPinHash } from './pin';
+import { isCardColor } from './styles';
 
 /** Thrown by setConfig; HA renders the message as an error card. */
 export class ConfigError extends Error {
@@ -80,6 +81,14 @@ function texts(v: unknown, path: string): TextOverrides | undefined {
   return v as TextOverrides;
 }
 
+function color(v: unknown): string {
+  if (v === undefined) return 'state';
+  if (typeof v !== 'string' || !isCardColor(v)) {
+    throw new ConfigError('color must be state, a theme color name or a hex value like #8e44ad');
+  }
+  return v;
+}
+
 function action(v: unknown, path: string): ActionConfig | undefined {
   if (v === undefined) return undefined;
   if (!isObject(v)) throw new ConfigError(`${path}action must be an object`);
@@ -148,6 +157,7 @@ export function normalizeConfig(raw: unknown, opts: { lenient?: boolean } = {}):
   const cfg: SafeToggleConfig = {
     type: String(raw.type ?? 'custom:safe-toggle-card'),
     entity: hasEntity ? (raw.entity as string) : '',
+    color: color(raw.color),
     show_state: raw.show_state !== false,
     header_action: oneOf(raw, 'header_action', ['none', 'more-info'] as const, 'none', ''),
     haptics: raw.haptics !== false,
