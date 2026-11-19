@@ -133,14 +133,17 @@ function pin(v: unknown): PinConfig {
   return out;
 }
 
-export function normalizeConfig(raw: unknown): SafeToggleConfig {
+/**
+ * `lenient` is for the editor: a config being edited may lack an entity or a PIN yet,
+ * and the form still needs the defaults filled in.
+ */
+export function normalizeConfig(raw: unknown, opts: { lenient?: boolean } = {}): SafeToggleConfig {
   if (!isObject(raw)) throw new ConfigError('Invalid configuration');
-  if (typeof raw.entity !== 'string' || !raw.entity.includes('.')) {
-    throw new ConfigError('entity is required');
-  }
+  const hasEntity = typeof raw.entity === 'string' && raw.entity.includes('.');
+  if (!hasEntity && !opts.lenient) throw new ConfigError('entity is required');
   const cfg: SafeToggleConfig = {
     type: String(raw.type ?? 'custom:safe-toggle-card'),
-    entity: raw.entity,
+    entity: hasEntity ? (raw.entity as string) : '',
     show_state: raw.show_state !== false,
     header_action: oneOf(raw, 'header_action', ['none', 'more-info'] as const, 'none', ''),
     haptics: raw.haptics !== false,
@@ -152,7 +155,7 @@ export function normalizeConfig(raw: unknown): SafeToggleConfig {
   if (typeof raw.icon === 'string') cfg.icon = raw.icon;
   const t = texts(raw.texts, '');
   if (t) cfg.texts = t;
-  if (cfg.activate.confirm === 'pin' || cfg.deactivate.confirm === 'pin') {
+  if ((cfg.activate.confirm === 'pin' || cfg.deactivate.confirm === 'pin') && !opts.lenient) {
     cfg.pin = pin(raw.pin);
   }
   return cfg;
