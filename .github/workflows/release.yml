@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish release
+    runs-on: ubuntu-latest
+    container:
+      image: node:26
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v7.0.1
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🧪 Test
+        run: npx task test
+
+      - name: 🏗️ Build
+        run: npx task build
+
+      - name: 🚀 Publish release with the bundle
+        uses: softprops/action-gh-release@v3.0.4
+        with:
+          files: dist/safe-toggle-card.js
+          generate_release_notes: true
