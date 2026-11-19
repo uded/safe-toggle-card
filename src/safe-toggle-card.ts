@@ -349,7 +349,7 @@ export class SafeToggleCard extends LitElement {
     ha-card {
       height: 100%;
       box-sizing: border-box;
-      padding: 10px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       justify-content: center;

@@ -28,13 +28,19 @@ customElements.define(
     constructor() {
       super();
       this.attachShadow({ mode: 'open' }).innerHTML =
-        `<style>:host{display:block;background:var(--card-background-color);border-radius:var(--ha-card-border-radius);border:1px solid var(--ha-card-border-color)}</style><slot></slot>`;
+        // same fallbacks as HA's ha-card
+        `<style>:host{display:block;background:var(--ha-card-background,var(--card-background-color,#fff));border-radius:var(--ha-card-border-radius,12px);border:var(--ha-card-border-width,1px) solid var(--ha-card-border-color,var(--divider-color,#e0e0e0));box-shadow:var(--ha-card-box-shadow,none)}</style><slot></slot>`;
     }
   },
 );
 
 const PIN = hashPin('1234');
 const configs = [
+  {
+    entity: 'input_boolean.away_mode',
+    name: 'Away mode (slide both ways)',
+    icon: 'mdi:airplane',
+  },
   {
     entity: 'lock.front_door',
     name: 'Front door (slide + PIN 1234 to unlock, tap to lock)',
@@ -62,6 +68,7 @@ const configs = [
 ];
 
 const initial = {
+  'input_boolean.away_mode': { state: 'off' },
   'lock.front_door': { state: 'locked' },
   'switch.pump': { state: 'off' },
   'light.garden': { state: 'on' },

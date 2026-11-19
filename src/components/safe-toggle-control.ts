@@ -375,7 +375,7 @@ export class SafeToggleControl extends LitElement {
       position: relative;
       height: var(--row-height);
       border-radius: var(--row-radius);
-      background: var(--secondary-background-color, rgba(127, 127, 127, 0.15));
+      background: color-mix(in srgb, var(--primary-text-color, #000) 6%, transparent);
       overflow: hidden;
       user-select: none;
       -webkit-user-select: none;
@@ -392,7 +392,9 @@ export class SafeToggleControl extends LitElement {
       inset: 0;
       inset-inline-end: auto;
       width: calc(var(--row-height) + (100% - var(--row-height)) * var(--progress));
-      background: color-mix(in srgb, var(--target) 25%, transparent);
+      background: color-mix(in srgb, var(--target) 35%, transparent);
+      /* invisible at rest: the color arrives with the commitment */
+      opacity: calc(var(--progress) * 3);
     }
     .label {
       position: absolute;
@@ -410,6 +412,8 @@ export class SafeToggleControl extends LitElement {
       pointer-events: none;
     }
     .track .label {
+      color: var(--secondary-text-color);
+      font-weight: var(--ha-font-weight-normal, 400);
       opacity: calc(1 - var(--progress) * 1.5);
     }
     .handle {
@@ -419,8 +423,15 @@ export class SafeToggleControl extends LitElement {
       width: calc(var(--row-height) - 8px);
       height: calc(var(--row-height) - 8px);
       border-radius: calc(var(--row-radius) - 4px);
-      background: var(--target);
-      color: var(--text-primary-color, #fff);
+      /* HA's tile icon look: a 20% state tint with the chevron in full state color */
+      background: color-mix(
+        in srgb,
+        var(--target) 20%,
+        var(--ha-card-background, var(--card-background-color, #fff))
+      );
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+      color: var(--target);
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -439,7 +450,12 @@ export class SafeToggleControl extends LitElement {
     .track.idle .fill {
       transition:
         inset-inline-start 0.25s ease,
-        width 0.25s ease;
+        width 0.25s ease,
+        opacity 0.25s ease;
+    }
+    .handle ha-icon,
+    .handle .spinner {
+      position: relative;
     }
     .track.dragging .handle,
     .track.holding .handle {
@@ -449,7 +465,7 @@ export class SafeToggleControl extends LitElement {
       position: absolute;
       inset: 0;
       border-radius: inherit;
-      background: rgba(255, 255, 255, 0.35);
+      background: color-mix(in srgb, var(--target) 30%, transparent);
       transform-origin: left;
       animation: hold var(--hold-ms) linear forwards;
     }
