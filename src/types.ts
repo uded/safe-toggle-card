@@ -12,7 +12,13 @@ export interface HomeAssistant {
   states: Record<string, HassEntity>;
   locale: { language: string };
   language: string;
-  callService(domain: string, service: string, data?: object, target?: object): Promise<unknown>;
+  callService(
+    domain: string,
+    service: string,
+    data?: object,
+    target?: object,
+    notifyOnError?: boolean,
+  ): Promise<unknown>;
   formatEntityState(stateObj: HassEntity): string;
   translationMetadata?: { dir?: 'ltr' | 'rtl' };
 }

@@ -76,10 +76,9 @@ function pinSchema(raw: Raw, lang: Lang): HaFormSchema[] {
   const fields: HaFormSchema[] = [
     { name: 'source', selector: select(lang, 'editor_source_', ['inline', 'entity']) },
   ];
+  // inline: no length field, the PIN field sets pin.length from the PIN itself
   if (source === 'entity') {
     fields.push({ name: 'entity_pin', selector: { entity: { domain: 'input_text' } } });
-  } else {
-    fields.push(number('length', 4, 8));
   }
   fields.push(number('max_attempts', 1, 20), number('lockout_s', 0, 3600));
   return fields;
@@ -137,6 +136,12 @@ export function editorData(raw: Raw): Raw {
   };
   for (const dir of DIRECTIONS) {
     data[dir] = { ...raw[dir], ...cfg[dir], preset: presetOf(cfg[dir]) };
+    // the ui_action selector needs the action type to show the service picker
+    const custom = cfg[dir].action;
+    if (custom) data[dir].action = { action: 'perform-action', ...custom };
+    else if (raw[dir]?.action?.action === 'perform-action') {
+      data[dir].action = { action: 'perform-action' };
+    } else delete data[dir].action;
   }
   if (raw.pin) {
     const { entity, ...pin } = raw.pin;
@@ -166,14 +171,16 @@ export function applyEditorData(raw: Raw, data: Raw): Raw {
     if (preset && preset !== 'custom' && preset !== before[dir]?.preset) {
       Object.assign(d, PRESETS[preset as PresetId]);
     }
-    if (!d.action?.perform_action) delete d.action;
-    else
-      d.action = {
-        perform_action: d.action.perform_action,
-        target: d.action.target,
-        data: d.action.data,
-      };
-    if (d.action) for (const k of ['target', 'data']) if (!d.action[k]) delete d.action[k];
+    const a = d.action as Raw | undefined;
+    if (!a || (a.action && a.action !== 'perform-action')) {
+      delete d.action;
+    } else if (!a.perform_action) {
+      // type chosen, service not yet: keep it so the selector does not snap back
+      d.action = { action: 'perform-action' };
+    } else {
+      d.action = { perform_action: a.perform_action, target: a.target, data: a.data };
+      for (const k of ['target', 'data']) if (!d.action[k]) delete d.action[k];
+    }
     const texts = cleanTexts(d.texts);
     if (texts) d.texts = texts;
     else delete d.texts;

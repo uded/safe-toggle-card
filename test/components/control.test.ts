@@ -64,10 +64,11 @@ describe('slide', () => {
     expect(seen).toEqual(['gesture-start', 'gesture-done']);
   });
 
-  it('pressing the track nudges and does not start', async () => {
+  it('tapping the track nudges and does not start', async () => {
     const el = await mount({});
     const seen = record(el);
     pointer('pointerdown', q(el, '.track'), 10);
+    pointer('pointerup', q(el, '.track'), 12);
     await el.updateComplete;
     expect(seen).toEqual([]);
     expect(q(el, '.track').classList.contains('nudge')).toBe(true);

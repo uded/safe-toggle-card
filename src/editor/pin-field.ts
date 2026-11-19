@@ -24,9 +24,13 @@ export class SafeTogglePinField extends LitElement {
     this.error = '';
   }
 
-  private emit(hash: string | null): void {
+  private emit(hash: string | null, length?: number): void {
     this.dispatchEvent(
-      new CustomEvent('pin-hash-changed', { detail: { hash }, bubbles: true, composed: true }),
+      new CustomEvent('pin-hash-changed', {
+        detail: { hash, length },
+        bubbles: true,
+        composed: true,
+      }),
     );
   }
 
@@ -40,7 +44,7 @@ export class SafeTogglePinField extends LitElement {
     if (input) input.value = '';
     this.error = '';
     this.editing = false;
-    this.emit(hashPin(value));
+    this.emit(hashPin(value), value.length);
   }
 
   render() {

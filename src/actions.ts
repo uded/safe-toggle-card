@@ -28,5 +28,6 @@ export function buildCall(cfg: SafeToggleConfig, dir: Direction): ServiceCall {
 }
 
 export async function executeCall(hass: HomeAssistant, call: ServiceCall): Promise<void> {
-  await hass.callService(call.domain, call.service, call.data, call.target);
+  // notifyOnError false: the card shows its own localised toast
+  await hass.callService(call.domain, call.service, call.data, call.target, false);
 }

@@ -49,7 +49,13 @@ describe('executeCall', () => {
     const hass = { callService } as unknown as HomeAssistant;
     await executeCall(hass, { domain: 'lock', service: 'unlock', target: { entity_id: 'lock.x' } });
     expect(callService).toHaveBeenCalledOnce();
-    expect(callService).toHaveBeenCalledWith('lock', 'unlock', undefined, { entity_id: 'lock.x' });
+    expect(callService).toHaveBeenCalledWith(
+      'lock',
+      'unlock',
+      undefined,
+      { entity_id: 'lock.x' },
+      false,
+    );
   });
 
   it('propagates a rejection', async () => {

@@ -76,10 +76,15 @@ export class SafeToggleCardEditor extends LitElement {
     this.commit(applyEditorData(this.config, e.detail.value));
   }
 
-  private onPinHash(e: CustomEvent<{ hash: string | null }>): void {
+  private onPinHash(e: CustomEvent<{ hash: string | null; length?: number }>): void {
     const pin: Raw = { source: 'inline', ...this.config.pin };
-    if (e.detail.hash) pin.hash = e.detail.hash;
-    else delete pin.hash;
+    if (e.detail.hash) {
+      pin.hash = e.detail.hash;
+      // the keypad auto-submits at pin.length, so it must match the PIN just set
+      if (e.detail.length) pin.length = e.detail.length;
+    } else {
+      delete pin.hash;
+    }
     this.commit({ ...this.config, pin });
   }
 

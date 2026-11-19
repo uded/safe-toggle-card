@@ -84,6 +84,10 @@ function action(v: unknown, path: string): ActionConfig | undefined {
   if (v === undefined) return undefined;
   if (!isObject(v)) throw new ConfigError(`${path}action must be an object`);
   const name = v.perform_action ?? v.service;
+  // the editor's ui_action selector: type picked, no service yet, or "none"
+  if (name === undefined && (v.action === 'perform-action' || v.action === 'none')) {
+    return undefined;
+  }
   if (typeof name !== 'string' || !name.includes('.')) {
     throw new ConfigError(`${path}action.perform_action must look like domain.service`);
   }

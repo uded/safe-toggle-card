@@ -50,6 +50,9 @@ export class SafeToggleControl extends LitElement {
   /** Result of the last pointer press on the button; null when no pointer was involved. */
   private pointerTapped: boolean | null = null;
   private travelPx = 1;
+  /** pointerId that grabbed the handle; null when no pointer drag is active. */
+  private activePointer: number | null = null;
+  private trackTap: TapState = { phase: 'idle' };
 
   constructor() {
     super();
@@ -76,11 +79,19 @@ export class SafeToggleControl extends LitElement {
     this.multi = { phase: 'idle' };
     this.tap = { phase: 'idle' };
     this.pointerTapped = null;
+    this.activePointer = null;
+    this.trackTap = { phase: 'idle' };
     this.nudging = false;
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    document.addEventListener('visibilitychange', this.onVisibility);
   }
 
   disconnectedCallback(): void {
     super.disconnectedCallback();
+    document.removeEventListener('visibilitychange', this.onVisibility);
     this.reset();
   }
 
@@ -147,33 +158,71 @@ export class SafeToggleControl extends LitElement {
   }
 
   private onSlideDown(e: PointerEvent): void {
-    if (this.disabled) return;
+    if (this.disabled || this.activePointer !== null) return;
     const onHandle = e
       .composedPath()
       .some((n) => n instanceof HTMLElement && n.classList.contains('handle'));
-    if (onHandle) {
-      this.measure();
-      try {
-        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-      } catch {
-        // capture is best effort (synthetic events, old WebViews)
-      }
+    if (!onHandle) {
+      // The hint waits for a real tap: a scroll that starts on the track must stay silent.
+      this.trackTap = tapReducer(this.trackTap, {
+        type: 'down',
+        x: e.clientX,
+        y: e.clientY,
+        t: Date.now(),
+      }).state;
+      return;
     }
-    this.dispatchSlide({ type: 'down', x: this.logicalX(e), onHandle });
+    this.measure();
+    this.activePointer = e.pointerId;
+    try {
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    } catch {
+      // capture is best effort (synthetic events, old WebViews)
+    }
+    this.dispatchSlide({ type: 'down', x: this.logicalX(e), onHandle: true });
+  }
+
+  /** Only the pointer that grabbed the handle may move or release it. */
+  private ownsPointer(e: PointerEvent): boolean {
+    return this.activePointer !== null && e.pointerId === this.activePointer;
   }
 
   private onSlideMove(e: PointerEvent): void {
-    if (this.disabled) return;
+    if (this.disabled || !this.ownsPointer(e)) return;
     this.dispatchSlide({ type: 'move', x: this.logicalX(e) });
   }
 
-  private onSlideUp(): void {
+  private onSlideUp(e: PointerEvent): void {
+    if (this.activePointer === null) {
+      const r = tapReducer(this.trackTap, {
+        type: 'up',
+        x: e.clientX,
+        y: e.clientY,
+        t: Date.now(),
+      });
+      this.trackTap = r.state;
+      if (r.tapped && !this.disabled) {
+        this.dispatchSlide({ type: 'down', x: this.logicalX(e), onHandle: false });
+      }
+      return;
+    }
+    if (!this.ownsPointer(e)) return;
+    this.activePointer = null;
     if (!this.disabled) this.dispatchSlide({ type: 'up' });
   }
 
-  private onSlideCancel(): void {
+  private onSlideCancel(e: PointerEvent): void {
+    this.trackTap = tapReducer(this.trackTap, { type: 'cancel' }).state;
+    if (!this.ownsPointer(e)) return;
+    this.activePointer = null;
     this.dispatchSlide({ type: 'cancel' });
   }
+
+  private onVisibility = (): void => {
+    if (!document.hidden) return;
+    this.activePointer = null;
+    this.dispatchSlide({ type: 'cancel' });
+  };
 
   private onSlideKey(e: KeyboardEvent, pressed: boolean): void {
     if (this.disabled || !SLIDE_KEYS.has(e.key)) return;
@@ -425,6 +474,8 @@ export class SafeToggleControl extends LitElement {
     }
     .button {
       cursor: pointer;
+      /* fast multi-taps must not trigger double-tap zoom on iOS */
+      touch-action: manipulation;
       background: color-mix(
         in srgb,
         var(--target) 20%,
