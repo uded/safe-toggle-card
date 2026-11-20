@@ -6,6 +6,13 @@ Each release on GitHub uses the section for its version as the release notes.
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-11-20
+
+### Changed
+
+- The README shows the card in Home Assistant: a slide, a multi-tap and the confirmation dialog. The screenshots also appear on the card's page in HACS.
+- The repository is ready for the HACS default store. Every HACS validation check passes.
+
 ## [0.1.3] - 2026-11-19
 
 ### Added
@@ -45,7 +52,8 @@ Each release on GitHub uses the section for its version as the release notes.
 - Works with `input_boolean`, `switch`, `light`, `lock`, `script`, `scene` and other on/off entities, with an optional custom action per direction.
 - Visual editor with presets, English and Polish, haptics in the Companion app, keyboard control and screen reader announcements.
 
-[Unreleased]: https://github.com/uded/slide-and-confirm-card/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/uded/slide-and-confirm-card/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/uded/slide-and-confirm-card/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/uded/slide-and-confirm-card/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/uded/slide-and-confirm-card/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/uded/slide-and-confirm-card/compare/v0.1.0...v0.1.1

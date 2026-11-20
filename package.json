@@ -1,6 +1,6 @@
 {
   "name": "safe-toggle-card",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Home Assistant Lovelace card that toggles an entity behind slide, multi-tap, confirm or PIN protection",
   "type": "module",
   "license": "MIT",
