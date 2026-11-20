@@ -6,6 +6,13 @@ Each release on GitHub uses the section for its version as the release notes.
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-11-20
+
+### Changed
+
+- Safe Toggle Card is in the HACS default store. The README now tells you to search for it in HACS, or use the Open in HACS button. Adding it as a custom repository is still described for older HACS versions.
+- The manual install steps add a version number to the resource URL, so browsers and the Companion app load the new file after an update, and show the entry for dashboards in YAML mode.
+
 ## [0.1.5] - 2026-11-20
 
 ### Changed
@@ -58,7 +65,8 @@ Each release on GitHub uses the section for its version as the release notes.
 - Works with `input_boolean`, `switch`, `light`, `lock`, `script`, `scene` and other on/off entities, with an optional custom action per direction.
 - Visual editor with presets, English and Polish, haptics in the Companion app, keyboard control and screen reader announcements.
 
-[Unreleased]: https://github.com/uded/safe-toggle-card/compare/v0.1.5...HEAD
+[Unreleased]: https://github.com/uded/safe-toggle-card/compare/v0.1.6...HEAD
+[0.1.6]: https://github.com/uded/safe-toggle-card/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/uded/safe-toggle-card/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/uded/safe-toggle-card/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/uded/safe-toggle-card/compare/v0.1.2...v0.1.3
