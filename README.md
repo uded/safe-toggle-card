@@ -8,20 +8,35 @@ The card follows your Home Assistant theme: state colors, MDI icons, card radius
 | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
 | ![Slide to turn on](https://raw.githubusercontent.com/uded/safe-toggle-card/main/images/slide.png) | ![Tap 3 times to turn on](https://raw.githubusercontent.com/uded/safe-toggle-card/main/images/multi-tap.png) | ![Confirmation dialog](https://raw.githubusercontent.com/uded/safe-toggle-card/main/images/dialog.png) |
 
-## Installation
+## Install
 
 ### HACS
 
-1. In HACS, open the menu (⋮) and choose **Custom repositories**.
-2. Add this repository's URL with the type **Dashboard**.
-3. Install **Safe Toggle Card** and reload the browser.
+[![Open in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=uded&repository=safe-toggle-card&category=plugin)
+
+1. Open HACS and search for **Safe Toggle Card**, or use the button above.
+2. Install it and reload the browser.
+
+If the search does not find it (an older HACS, or before the store has refreshed), add it as a custom repository first: HACS → ⋮ → **Custom repositories** → add `https://github.com/uded/safe-toggle-card`, type **Dashboard**.
 
 ### Manual
 
-1. Download `safe-toggle-card.js` from the latest release into `config/www/`.
-2. In **Settings → Dashboards → ⋮ → Resources**, add `/local/safe-toggle-card.js` as a **JavaScript module**.
+1. Download `safe-toggle-card.js` from the [latest release](https://github.com/uded/safe-toggle-card/releases/latest) and copy it to `/config/www/`.
+2. **Settings → Dashboards → ⋮ → Resources → Add resource**: URL `/local/safe-toggle-card.js?v=1`, type **JavaScript module**. (Resources are only listed with advanced mode on in your user profile.)
+3. Reload the browser.
 
-Requires Home Assistant 2024.8 or newer.
+When you update the file, raise the `?v=` number in the resource URL, otherwise browsers and the companion app keep the old version cached. HACS does this for you.
+
+With dashboards in YAML mode, add the same entry to the `resources:` list of your Lovelace configuration:
+
+```yaml
+- url: /local/safe-toggle-card.js?v=1
+  type: module
+```
+
+### Requirements
+
+Home Assistant 2024.8 or newer.
 
 ## Quick start
 
