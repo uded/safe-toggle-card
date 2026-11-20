@@ -4,9 +4,9 @@ A Home Assistant Lovelace card that switches one entity on or off, behind protec
 
 The card follows your Home Assistant theme: state colors, MDI icons, card radius and fonts all come from the theme.
 
-| Slide                                                                                                    | Multi-tap                                                                                                          | Dialog                                                                                                       |
-| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| ![Slide to turn on](https://raw.githubusercontent.com/uded/slide-and-confirm-card/main/images/slide.png) | ![Tap 3 times to turn on](https://raw.githubusercontent.com/uded/slide-and-confirm-card/main/images/multi-tap.png) | ![Confirmation dialog](https://raw.githubusercontent.com/uded/slide-and-confirm-card/main/images/dialog.png) |
+| Slide                                                                                              | Multi-tap                                                                                                    | Dialog                                                                                                 |
+| -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| ![Slide to turn on](https://raw.githubusercontent.com/uded/safe-toggle-card/main/images/slide.png) | ![Tap 3 times to turn on](https://raw.githubusercontent.com/uded/safe-toggle-card/main/images/multi-tap.png) | ![Confirmation dialog](https://raw.githubusercontent.com/uded/safe-toggle-card/main/images/dialog.png) |
 
 ## Installation
 

@@ -6,6 +6,12 @@ Each release on GitHub uses the section for its version as the release notes.
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-11-20
+
+### Changed
+
+- The repository is now `uded/safe-toggle-card`, the same name as the card. The old `slide-and-confirm-card` address redirects here, and existing dashboards keep working: the card type is still `custom:safe-toggle-card`.
+
 ## [0.1.4] - 2026-11-20
 
 ### Changed
@@ -52,9 +58,10 @@ Each release on GitHub uses the section for its version as the release notes.
 - Works with `input_boolean`, `switch`, `light`, `lock`, `script`, `scene` and other on/off entities, with an optional custom action per direction.
 - Visual editor with presets, English and Polish, haptics in the Companion app, keyboard control and screen reader announcements.
 
-[Unreleased]: https://github.com/uded/slide-and-confirm-card/compare/v0.1.4...HEAD
-[0.1.4]: https://github.com/uded/slide-and-confirm-card/compare/v0.1.3...v0.1.4
-[0.1.3]: https://github.com/uded/slide-and-confirm-card/compare/v0.1.2...v0.1.3
-[0.1.2]: https://github.com/uded/slide-and-confirm-card/compare/v0.1.1...v0.1.2
-[0.1.1]: https://github.com/uded/slide-and-confirm-card/compare/v0.1.0...v0.1.1
-[0.1.0]: https://github.com/uded/slide-and-confirm-card/releases/tag/v0.1.0
+[Unreleased]: https://github.com/uded/safe-toggle-card/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/uded/safe-toggle-card/compare/v0.1.4...v0.1.5
+[0.1.4]: https://github.com/uded/safe-toggle-card/compare/v0.1.3...v0.1.4
+[0.1.3]: https://github.com/uded/safe-toggle-card/compare/v0.1.2...v0.1.3
+[0.1.2]: https://github.com/uded/safe-toggle-card/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/uded/safe-toggle-card/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/uded/safe-toggle-card/releases/tag/v0.1.0
